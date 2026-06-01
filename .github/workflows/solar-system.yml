@@ -32,6 +32,13 @@ jobs:
         - name: Unit Testing
           run: npm test
         
+        - name: Debug env presence
+          run: |
+            echo "MONGO_URI set? ${{ env.MONGO_URI != '' }}"
+            echo "MONGO_USERNAME var set? ${{ vars.MONGO_USERNAME != '' }}"
+            echo "MONGO_PASSWORD secret set? ${{ secrets.MONGO_PASSWORD != '' }}"  
+
+
         - name: Print test-results.xml (first 100 lines)
           if: always()
           run: |

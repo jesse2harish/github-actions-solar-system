@@ -33,6 +33,7 @@ jobs:
           run: npm test
         
         - name: Debug env presence
+          if: always()
           run: |
             echo "MONGO_URI set? ${{ env.MONGO_URI != '' }}"
             echo "MONGO_USERNAME var set? ${{ vars.MONGO_USERNAME != '' }}"

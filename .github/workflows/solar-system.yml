@@ -30,7 +30,24 @@ jobs:
     
         - name: Unit Testing
           run: npm test
-          
+        
+        - name: Print test-results.xml (first 100 lines)
+          if: always()
+          run: |
+            echo "PWD=$(pwd)"
+            if [ -f test-results.xml ]; then
+               echo "Found test-results.xml in current directory"
+               sed -n '1,100p' test-results.xml
+            else
+              echo "test-results.xml not in current directory, searching workspace..."
+              FILE=$(find "$GITHUB_WORKSPACE" -type f -name "test-results.xml" | head -n 1)
+              if [ -n "$FILE" ]; then
+                 echo "Found at: $FILE"
+                 sed -n '1,100p' "$FILE"
+              else
+                echo "test-results.xml not found anywhere under $GITHUB_WORKSPACE"
+              fi
+            fi  
         - name: Archive Test Result
           if: always()
           uses: actions/upload-artifact@v4
